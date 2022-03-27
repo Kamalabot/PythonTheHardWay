@@ -1,5 +1,5 @@
 # PythonTheHardWay
-Repo Consists of all the exercise that were provided the Zed Shaw's book Learn Python the Hard way. 
+Repo Consists of all the exercise that were provided in the Zed Shaw's book Learn Python the Hard way. 
 
 Exercises seem simple enough and repetitive in the beginning. When you reach Classes and Object Oriented,the benefit is evident. 
 All your doubts regarding the OOP will pragmatically get answered. After that, you get to create your own game (text oriented).
