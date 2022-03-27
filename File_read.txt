@@ -1,0 +1,13 @@
+This is stuff I typed into a file.
+It is really cool stuff.
+Lots and lots of fun to have in here.
+
+16 Exercises have passed. Things memorable are
+f-strings
+file reading
+Using """
+Using python -m pydoc function
+Rigorous use of input() function 
+Reducing the code to single line challenges boosted my confidence...
+Oh, it also thought me to be careful about the way I refer to the arguments. 
+I lost the data that I had typed into the file that I wanted to read.
