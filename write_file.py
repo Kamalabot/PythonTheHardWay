@@ -9,7 +9,7 @@ print("If you want to erase, then Return")
 input('?')
 
 print("Opening the file...")
-#opening with write feature
+# opening with write feature
 target = open(filename,'w')
 
 print("Truncating the file, Good day...")

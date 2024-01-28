@@ -11,12 +11,12 @@ print(x)
 print()
 
 print(f"I said: {x}")
-#Seems to be taking the variable y in different way
+# Seems to be taking the variable y in different way
 print(f"I also said: {y}")
 
 hilarious = False
 joke_evaluation = "Isn't that joke so funn? {}"
-#Yeah, I get the joke...
+# Yeah, I get the joke...
 print(joke_evaluation.format(hilarious))
 
 print("Writing differently:Joke eval {}".format(hilarious))

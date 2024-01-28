@@ -9,11 +9,12 @@ class Other(object):
     def altered(self):
         print("Other altered()")
 
+
 class Child(object): #No inheritance, that is is-a
 
     def __init__(self):
         self.other = Other() 
-        #We make one of objects of Other and assign it to child attribute 
+        # We make one of objects of Other and assign it to child attribute 
 
     def implicit(self):
         self.other.implicit()
