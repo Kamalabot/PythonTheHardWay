@@ -6,6 +6,11 @@ Return the head of the merged linked list.
 link = "https://leetcode.com/problems/merge-two-sorted-lists/description/"
 solution = "reviewing linked list"
 
+approach = """
+Take a head of a l1, assign its next node to a temp variable
+Take the head of the l2, and make it next of the l1's head. 
+"""
+
 # Using the ListNode class
 class ListNode(object):
     def __init__(self, val=None, next=None) -> None:
@@ -13,79 +18,81 @@ class ListNode(object):
         self.next = next
 
 
-class LinkedList(object):
+class singleLinked(object):
     def __init__(self) -> None:
         self.head = None
-        self.length = 0
 
-    # implement append method
     def append(self, val):
-        # check if head is none
         if self.head is None:
             self.head = ListNode(val)
-            self.length += 1
-        # if not none, the assign it to a observer
         curr = self.head
-        # enter endless loop
-        while True:
-            # check if at tail node
-            if curr.next is None:
-                # append the next node
-                curr.next = ListNode(val)
-                self.length += 1
-                # exit loop
-                break
-            # move to the next element
+        while curr.next is not None:
             curr = curr.next
+        curr.next = ListNode(val)
 
-    def traverse(self):
-        # create a store for elements
-        store = []
 
-        if self.head is None:
-            return store
-        # assign head to observer
-        curr = self.head
-        store.append(curr.val)
-        # enter endless loop
-        while True:
-            # check if curr is tail
-            if curr.next is None:
-                break
-            # move to the next element
-            curr = curr.next
-            store.append(curr.val)
-        # return the store list
-        return store
-
-    def __len__(self):
-        return self.length
+def get_elem(head):
+    elements = []
+    if head is None:
+        return elements
+    curr = head
+    while curr.next is not None:
+        # print(curr.val)
+        elements.append(curr.val)
+        curr = curr.next
+    elements.append(curr.val)
+    return elements
 
 
 def mergeTwoLists(list1, list2):
-    # create two linked lists
-    ll1 = LinkedList()
-    ll2 = LinkedList()
-    # if list has elements then append to ll1
-    if len(list1) > 0:
-        for val in list1:
-            ll1.append(val)
+    # 1st element is head
+    link1 = ListNode(val=list1[0])
+    link2 = ListNode(val=list2[0])
+    curr1 = link1
+    curr2 = link2
+    for x in list1[1:]:
+        curr1.next = ListNode(x)
+        curr1 = curr1.next
+    for x in list2[1:]:
+        curr2.next = ListNode(x)
+        curr2 = curr2.next
+    # print(get_elem(link1))
+    # print(get_elem(link2))
+    # start a while loop to traverse list1
+    while link1.next is not None:
+        # assign l1-head's next element to temp1
+        temp1 = link1.next
+        # assign the l2-head as l1_head.next 
+        link1.next = link2
+        # start traversing list2
+        while link2.next is not None:
+            # assign the next of list2 to temp 2
+            temp2 = link2.next
+            # assign temp1 from above as list2.next
+            link2.next = temp1
+            # assign temp2 to list2  
+            link2 = temp2.next
+        # assign next of temp1 to list1
+        link1 = temp1.next
+    x = get_elem(link1)
+    print(x)
+    return x
 
-    # repeat above
-    if len(list2) > 0:
-        for val in list2:
-            ll2.append(val)
- 
-    print(len(ll1))
-    print(len(ll2))
-    print(ll1.traverse())
-    print(ll2.traverse())
+
+# below cannot be a solution
+def merger_simp(list1, list2):
+    newl = [] 
+    for ind, x in enumerate(list1):
+        newl.append(x)
+        newl.append(list2[ind])
+    return newl
 
 
 list1 = [1, 2, 4]
 list2 = [1, 3, 4]
 Output = [1, 1, 2, 3, 4, 4]
-assert mergeTwoLists(list1, list2) == None  # Output
+# assert mergeTwoLists(list1, list2) == Output  # Output
+assert merger_simp(list1, list2) == Output  # Output
 
 # list1 = []
 # list2 = []
