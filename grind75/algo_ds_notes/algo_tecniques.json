@@ -1,0 +1,11 @@
+{
+    "Array":[
+        {"sliding_window":"https://leetcode.com/problems/minimum-window-substring/solutions/26808/here-is-a-10-line-template-that-can-solve-most-substring-problems/"}, 
+        {"Two_Pointers":"None"},
+        {"Traversing_from_Right":"None"},
+        {"Sorting_Array":"None"},
+        {"Precomputation":"None"},
+        {"Hashing_Index":"None"},
+        {"Traversing_Array": "None"}
+    ]
+}
