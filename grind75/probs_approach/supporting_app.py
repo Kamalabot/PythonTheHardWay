@@ -5,48 +5,18 @@ st.set_page_config(layout='wide')
 
 st.title("Grind 75: Problems and Approaches.")
 current_dir = pathlib.Path(__file__).parent.resolve()
-files_location = current_dir / "approach_prob.json"
-questions_data = current_dir / "QuestionGroups.json"
-files_location = files_location.resolve()
-# print(files_location)
+questions_data = current_dir / "structured_data.json"
+files_location = questions_data.resolve()
 
-with open(files_location, 'r') as grind:
-    approach_json = json.load(grind)
-
-with open(questions_data, 'r') as ques:
+with open(files_location, 'r') as ques:
     q_data = json.load(ques)
 
-q_vals = q_data.values()
-all_data = []
-for qd in q_vals:
-    for x in qd:
-        all_data.append(x)
-# print(type(approach_json))
-# bringing the approach and the challenge statement inside all_data
-for ind, vals in enumerate(approach_json):
-    all_data[ind]['challenge_statement'] = vals['challenge_statement']
-    all_data[ind]['approach'] = vals['approach']
-
-
-unique_topics = set([item['topic'] for item in all_data])
-topics_list = list(unique_topics)
-# print(topics_list)
+unique_topics = list(q_data.keys()) 
 
 select_topic = st.selectbox(label='topic',
-                            options=topics_list,)
-# num_slider = st.slider('Selector',
-                       # min_value=0,
-                       # max_value=74)
+                            options=unique_topics,)
 
-
-def filter_topic(item, tgt_topic):
-    if item['topic'] == tgt_topic:
-        return True
-
-
-filtered_data = [item for item in all_data if filter_topic(item, select_topic)]
-
-filtered_slugs = [item['slug'] for item in filtered_data]
+filtered_slugs = [item['slug'] for item in q_data[select_topic]]
 select_question = st.selectbox(label='Questions',
                                options=filtered_slugs)
 
@@ -55,15 +25,39 @@ get_slug_idx = filtered_slugs.index(select_question)
 
 # print(get_slug_idx)
 # data = approach_json[get_slug_idx]
-question = filtered_data[get_slug_idx]
+question = q_data[select_topic][get_slug_idx]
 
-st.markdown(f"### {question['slug']}")
+title, complete = st.columns(2)
+
+title.markdown(f"### {question['slug']}")
+complete.markdown(f"Commenting Completed : {question['commented']}")
 
 st.markdown("### Challenge Statement")
-st.write(question['challenge_statement'])
+st.write(question['challenge'])
 
 st.markdown("### Leetcode Link")
 st.write(question["url"])
 
 with st.expander('See Approach', expanded=False):
     st.write(question['approach'])
+
+# ----- Commenting and Uncommenting ------ #
+if not question['commented']:
+    done_comment = st.button('Commenting Done')
+
+    if done_comment:
+        print('Comment status updated')
+        q_data[select_topic][get_slug_idx]['commented'] = True 
+        with open(files_location, 'w') as updt:
+            json.dump(q_data, updt)
+
+        st.rerun()
+else:
+    uncomment = st.button('Not Commented')
+    if uncomment:
+        print('Comment status falsed')
+        q_data[select_topic][get_slug_idx]['commented'] = False
+        with open(files_location, 'w') as updt:
+            json.dump(q_data, updt)
+        st.rerun()
+# ----- Commenting and Uncommenting ------ #
