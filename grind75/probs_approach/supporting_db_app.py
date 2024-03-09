@@ -97,7 +97,8 @@ question = select_question_by_slug(conn, select_question)[0]
 title, complete = st.columns(2)
 
 title.markdown(f"### {question[2]}")
-complete.markdown(f"Commenting Completed : {question[-1]}")
+status = "True" if question[-1] == 1 else "False"
+complete.markdown(f"Commenting Completed : {status}")
 
 st.markdown("### Challenge Statement")
 st.write(question[3])
