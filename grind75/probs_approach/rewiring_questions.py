@@ -1,5 +1,67 @@
 from pathlib import Path
 import json
+import sqlite3
+
+
+def create_connection(db_file):
+    """ create a database connection to the SQLite database
+        specified by db_file
+    :param db_file: database file
+    :return: Connection object or None
+    """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        return conn
+    except Exception as e:
+        print(e)
+
+    return conn
+
+
+def create_table(conn, create_table_sql):
+    """ create a table from the create_table_sql statement
+    :param conn: Connection object
+    :param create_table_sql: a CREATE TABLE statement
+    :return:
+    """
+    try:
+        c = conn.cursor()
+        c.execute(create_table_sql)
+    except Exception as e:
+        print(e)
+
+
+def create_question(conn, question):
+    """
+    Create a new question 
+    :param conn:
+    :param question:
+    :return:
+    """
+    sql = ''' INSERT INTO chalap(topic,slug,challenge,approach,url,commented)
+              VALUES(?,?,?,?,?,?); '''
+    cur = conn.cursor()
+    cur.execute(sql, question)
+    conn.commit()
+
+    return cur.lastrowid
+
+
+def update_comment(conn, question):
+    """
+    update comment status of a question 
+    :param conn:
+    :param question:
+    :return: project id
+    """
+    sql = ''' UPDATE chalap 
+              SET commented = ? ,
+              WHERE slug = ?'''
+    cur = conn.cursor()
+    cur.execute(sql, question)
+    conn.commit()
+
 
 current_dir = Path(__file__).parent.resolve()
 files_location = current_dir / "approach_prob.json"
@@ -29,6 +91,23 @@ for ind, vals in enumerate(approach_json):
 unique_topics = list(set([data['topic'] for data in all_data]))
 print('cheking unique topics: ', unique_topics)
 
+db_file = current_dir / 'solution_approach.db'
+conn = create_connection(db_file=db_file)
+print('created database')
+sql_create_topic_table = """CREATE TABLE IF NOT EXISTS chalap (
+                                id integer PRIMARY KEY,
+                                topic text NOT NULL,
+                                slug text NOT NULL,
+                                challenge text NOT NULL,
+                                approach text NOT NULL,
+                                url text NOT NULL,
+                                commented bool NOT NULL
+                            );"""
+
+if conn is not None:
+    create_table(conn, sql_create_topic_table)
+    print("created table")
+
 question_dict = dict()  # create a dictionary store
 # enumerate on the topics
 for ind, topic in enumerate(unique_topics):
@@ -49,9 +128,15 @@ for ind, topic in enumerate(unique_topics):
         })
         # append the dictionary to the topic_list
         topic_related_data.append(build_dict)
+        with conn:
+            # create data for table
+            question_tuple = (topic, data['slug'], data['challenge_statement'],
+                              data['approach'], data['url'], False)
+            # write to table
+            create_question(conn, question_tuple)
     # assign the topic_related_data to the topic key in the dictionary
     question_dict[topic] = topic_related_data
-
-# write out the dictionary
-with open('structured_data.json', 'w') as struc:
-    json.dump(question_dict, struc)
+print('Completed writing data to database')
+# # write out the dictionary
+# with open('structured_data.json', 'w') as struc:
+    # json.dump(question_dict, struc)
