@@ -1,4 +1,4 @@
-#This one is like the scripts with argv
+# This one is like the scripts with argv
 
 def print_two(*args):
     arg1, arg2 = args
@@ -8,11 +8,14 @@ def print_two(*args):
 def print_two_again(arg1, arg2):
     print(f"arg1:{arg1}, arg2:{arg2}")
 
+
 def print_one(arg1):
     print(f"arg1:{arg1}")
 
+
 def print_nen():
     print('I have nothing')
+
 
 print_two('Zed','Shaw')
 
